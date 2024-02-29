@@ -1,0 +1,93 @@
+using System.Text;
+ 
+int pin = 1111;
+int versuche = 0;
+double Kontostand = 1000;
+bool beenden = true;
+Console.OutputEncoding = Encoding.UTF8; // Damit das Euro Zeichen ausgeben werden kann sonst ist es ein Fragezeichen 
+ 
+pin:
+ 
+try
+{
+    for (int i = 0; i < 3; i++)
+    {
+        Console.Write("\nGebe sie Ihre PIN ein: ");
+        pin = int.Parse(Console.ReadLine()!);
+ 
+        if (pin != 1111)
+        {
+            Console.Write("\nPIN ist Falsch");
+            versuche += 1;
+            if (versuche == 3)
+            {
+                Console.Write("\nKarte wurde eingezogen!");
+                beenden = false;
+                break;
+            }
+        }
+        else if (pin == 1111)
+        {
+            Console.WriteLine("\nPIN ist Korrekt!");
+            break;
+        }
+    }
+    do
+    {
+ 
+        List<string> Menü = new List<string>();
+ 
+        Menü.Add("1.Kontostand");
+        Menü.Add("2.Abheben");
+        Menü.Add("3.Einzahlen");
+        Menü.Add("4.Beenden");
+ 
+        if (beenden == true)
+        {
+            foreach (string item in Menü)
+            {
+                Console.WriteLine($"{item}");
+            }
+ 
+            Console.Write("Wähle sie 1 - 4 ein: ");
+            int eingabe = int.Parse(Console.ReadLine()!);
+ 
+            switch (eingabe)
+            {
+                case 1:
+                    Console.WriteLine($"\nSie haben {Kontostand}€ auf dem Konto");
+ 
+                    break;
+                case 2:
+                    Console.Write("\nGeben sie die Summe zum Abheben ein: ");
+                    double summe = double.Parse(Console.ReadLine()!);
+                    if (summe > Kontostand)
+                    {
+                        Console.WriteLine("\nIhr Konto darf nicht Überzogen werden!");
+                    }
+                    else
+                    {
+                        Kontostand -= summe;
+                        Console.WriteLine($"Sie haben {summe}€ Abgehoben");
+                    }
+                    break;
+                case 3:
+                    Console.Write("\nGeben sie die summe zum Einzahlen an: ");
+                    summe = double.Parse(Console.ReadLine()!);
+                    Kontostand += summe;
+                    break;
+                case 4:
+                    Console.WriteLine("\nKarte wird Ausgegeben");
+                    beenden = false;
+                    break;
+            }
+        }
+    }
+ 
+    while (beenden == true);
+}
+catch (Exception)
+{
+    Console.WriteLine($"\nERROR Bitte nur Zahlen eingeben");
+    goto pin;
+}
